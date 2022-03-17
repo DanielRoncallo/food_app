@@ -153,6 +153,7 @@ class _ProfileState extends State<Profile> {
                         padding: const EdgeInsets.only(left: 30),
                         child: TextButton.icon(
                             onPressed: () {
+                              controller.logout();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

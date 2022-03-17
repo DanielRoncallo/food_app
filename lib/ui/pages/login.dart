@@ -18,6 +18,12 @@ class _LoginPageState extends State<LoginPage> {
   var email2Controller = TextEditingController();
   late bool _passwordVisible;
   late bool _loading;
+  void dispose() {
+    super.dispose();
+    userController.dispose();
+    passController.dispose();
+    email2Controller.dispose();
+  }
 
   @override
   void initState() {
@@ -161,7 +167,8 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>   GoogleSignInButton()),
+                                      builder: (context) =>
+                                          GoogleSignInButton()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
@@ -180,7 +187,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ],
-                        ),Row(
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
@@ -188,7 +196,8 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>   GoogleSignInButton()),
+                                      builder: (context) =>
+                                          GoogleSignInButton()),
                                 );
                               },
                               style: ElevatedButton.styleFrom(
