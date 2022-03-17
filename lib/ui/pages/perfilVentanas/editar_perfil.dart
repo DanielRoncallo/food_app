@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:food_app/ui/pages/login_controller.dart';
+import 'package:get/get.dart';
 
 class EditarPerfil extends StatefulWidget {
   EditarPerfil({Key? key}) : super(key: key);
@@ -11,12 +13,14 @@ class EditarPerfil extends StatefulWidget {
 
 class _EditarPerfilState extends State<EditarPerfil> {
   // ignore: prefer_final_fields
-  final _nombreController = TextEditingController();
+  var controller = Get.put(LoginController());
+
+  final _nombreController = TextEditingController(text: 'dasda');
 
   @override
   void dispose() {
     // Limpia el controlador cuando el widget se elimine del árbol de widgets
-    _nombreController.dispose();
+    //_nombreController.dispose();
     super.dispose();
   }
 
@@ -53,6 +57,13 @@ class _EditarPerfilState extends State<EditarPerfil> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Color(0xffc4c4c4),
+                        ),
+                        child: CircleAvatar(
+                          backgroundImage: Image.network(
+                                  controller.googleAccount.value?.photoUrl ??
+                                      '')
+                              .image,
+                          radius: 100,
                         ),
                       ),
                       SizedBox(height: 29.75),
@@ -110,12 +121,14 @@ class _EditarPerfilState extends State<EditarPerfil> {
                                   // ignore: prefer_const_literals_to_create_immutables
                                   children: [
                                     Text(
-                                      " ${_nombreController}  ",
-                                      textAlign: TextAlign.left,
+                                      "Nombre",
+                                      textAlign: TextAlign.right,
                                     ),
                                     Text(
-                                      "Ableitungen",
-                                      textAlign: TextAlign.right,
+                                      controller.googleAccount.value
+                                              ?.displayName ??
+                                          '',
+                                      textAlign: TextAlign.left,
                                     ),
                                     Icon(Icons.edit),
                                   ],
@@ -286,8 +299,10 @@ class _EditarPerfilState extends State<EditarPerfil> {
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        "Ableitungen",
-                                        textAlign: TextAlign.right,
+                                        controller.googleAccount.value
+                                                ?.displayName ??
+                                            '',
+                                        textAlign: TextAlign.left,
                                       ),
                                       Icon(Icons.edit),
                                     ],

@@ -2,11 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:food_app/ui/pages/cartVentanas/payment_method.dart';
+import 'package:food_app/ui/pages/google_sign_in.dart';
+import 'package:food_app/ui/pages/login_controller.dart';
 import 'package:food_app/ui/pages/perfilVentanas/ajustes.dart';
 import 'package:food_app/ui/pages/perfilVentanas/editar_perfil.dart';
 import 'package:food_app/ui/widgets/color_drawer.dart';
 import 'package:food_app/ui/utils/color_unit.dart';
 import 'package:food_app/ui/pages/start.dart';
+import 'package:get/get.dart';
 
 import '../ordenVentanas/orders.dart';
 
@@ -18,6 +21,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  var controller = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +45,7 @@ class _ProfileState extends State<Profile> {
               shape: BoxShape.circle,
               color: Color(0xffc4c4c4),
             ),
-            child: Center(
-                child: Text("Aqui va foto de perfil",
-                    style: TextStyle(fontSize: 20))),
+            child: CircleAvatar(backgroundImage: Image.network(controller.googleAccount.value?.photoUrl ?? '').image , radius: 100,),
           ),
           SizedBox(
             width: 114,
