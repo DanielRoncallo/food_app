@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/data/repositories/auth_methods.dart';
-
+import 'package:food_app/data/repositories/autho_methods.dart';
+  
 import 'package:food_app/ui/utils/color_unit.dart';
 import 'package:food_app/ui/pages/perfilVentanas/profile.dart';
 
