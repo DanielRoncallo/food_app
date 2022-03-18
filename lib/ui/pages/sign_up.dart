@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/data/repositories/autho_methods.dart';
-  
+import 'package:food_app/data/repositories/auth_methods.dart';
+
 import 'package:food_app/ui/utils/color_unit.dart';
 import 'package:food_app/ui/pages/perfilVentanas/profile.dart';
 
@@ -14,15 +14,48 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   //FirebaseController fc = Get.find();
 
-  var userController = TextEditingController();
-  var emailController = TextEditingController();
-  var passController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
   late bool _passwordVisible;
+  bool _isLoading = false;
+  @override
+  //método dispose utilizado para liberar la memoria asignada a las variables cuando se elimina el objeto de estado.
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _userController.dispose();
+    _passController.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     _passwordVisible = false;
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passController.text,
+      username: _userController.text,
+    );
+
+    if (res != 'Exito') {
+      showSnackbar(res, context);
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const Profile(),
+        ),
+      );
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -57,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextField(
-                                controller: emailController,
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                     labelText: 'Correo electrónico',
                                     border: OutlineInputBorder(
@@ -68,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextField(
-                                controller: userController,
+                                controller: _userController,
                                 decoration: InputDecoration(
                                     labelText: 'Nombre de usuario',
                                     border: OutlineInputBorder(
@@ -79,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TextField(
-                                controller: passController,
+                                controller: _passController,
                                 decoration: InputDecoration(
                                   labelText: 'Contraseña',
                                   border: OutlineInputBorder(
@@ -100,23 +133,29 @@ class _SignUpPageState extends State<SignUpPage> {
                                 obscureText: !_passwordVisible,
                               ),
                             ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  //signUpUser;
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    side: const BorderSide(
-                                        color: Color(0xff5727bf))),
-                                child: const Text(
-                                  'Registrarse',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
+                            InkWell(
+                              onTap: signUpUser,
+                              child: Container(
+                                child: _isLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : const Text('sign up'),
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 12),
+                                decoration: const ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
                                   ),
-                                )),
+                                  color: Color.fromRGBO(0, 149, 246, 1),
+                                ),
+                              ),
+                            ),
                           ],
                         )),
                         TextButton(
@@ -131,25 +170,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
-  /* void signUpUser() async {
-     
-    String res = await AuthMethods().signUpUser(
-      email: emailController.text,
-      password: passController.text,
-      username: userController.text,
-     
-    );
-    if (res != 'Exito') {
-       showSnackbar(res, context);
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Profile(),
-          
-        ),
-      );
-    }
-     
-  } */
 }

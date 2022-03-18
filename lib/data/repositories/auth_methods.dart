@@ -1,21 +1,11 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
-/*  
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_app/domain/entities/user.dart' as model;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthMethods {
   //instacian de la clase auth de firebase
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
-    DocumentSnapshot snap =
-        await _firestore.collection('usuarios').doc(currentUser.uid).get();
-
-    return model.User.fromSnap(snap);
-  }
 
   Future<String> signUpUser({
     required String email,
@@ -26,19 +16,15 @@ class AuthMethods {
   }) async {
     String res = "Un error ha ocurrido";
     try {
+      print('ma');
       //verifica que ningun campo este vacio
-      if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty
-          /*||
-          file != null*/
-          ) {
+      if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
         //registro el usuario
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         //user.uid es el identificador del usuario.
         //ponemos ! en user porque este puede ser nulo
         print(cred.user!.uid);
-        //sube la imagen al storage
-       
 
         model.User user = model.User(
           username: username,
@@ -51,16 +37,6 @@ class AuthMethods {
         await _firestore.collection('usuarios').doc(cred.user!.uid).set(
               user.toJson(),
             );
-        //otro metodo, no se usa porque tiene uid diferentes
-        /* await _firestore.collection('usuarios').add({
-          'username': username,
-          'uid': cred.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-        });*/
-
         res = 'Exito';
       }
     } on FirebaseAuthException catch (err) {
@@ -74,4 +50,3 @@ class AuthMethods {
     return res;
   }
 }
- */
